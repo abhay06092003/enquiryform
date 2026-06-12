@@ -16,7 +16,14 @@ from flask import (
     url_for,
 )
 
-from storage import get_submission, init_db, insert_submission, list_submissions, storage_backend_name
+from storage import (
+    get_submission,
+    init_db,
+    insert_submission,
+    is_persistent_storage,
+    list_submissions,
+    storage_backend_name,
+)
 
 app = Flask(__name__)
 app.secret_key = os.environ.get("SECRET_KEY", "quick-platter-enquiry-secret-2026")
@@ -100,6 +107,17 @@ def index():
 
 @app.route("/submit", methods=["POST"])
 def submit():
+    if os.environ.get("VERCEL") == "1" and not is_persistent_storage():
+        return (
+            jsonify(
+                {
+                    "success": False,
+                    "error": "Storage is not configured. Submissions cannot be saved permanently.",
+                }
+            ),
+            503,
+        )
+
     data = request.get_json()
     if not data or not data.get("name", "").strip():
         return jsonify({"success": False, "error": "Name is required."}), 400
