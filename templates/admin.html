@@ -112,9 +112,9 @@
         <h1>Submissions</h1>
         <span class="count-badge">{{ submissions|length }} response{{ 's' if submissions|length != 1 else '' }}</span>
         {% if storage_backend == 'memory' %}
-        <p style="font-size:12px;color:#e37400;margin-top:8px;">Using in-memory storage (local only). Set REDIS_URL for persistent storage on Vercel.</p>
+        <p style="font-size:12px;color:#c5221f;margin-top:8px;font-weight:600;">⚠ Data is NOT permanent — using temporary in-memory storage. On Vercel, add Upstash Redis from the Marketplace and redeploy.</p>
         {% else %}
-        <p style="font-size:12px;color:#188038;margin-top:8px;">Connected to Redis</p>
+        <p style="font-size:12px;color:#188038;margin-top:8px;">Connected to persistent storage (Redis)</p>
         {% endif %}
       </div>
       <div class="header-actions">
