@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard — Quick Platter</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: #f0ebf8;
+      color: #202124;
+      min-height: 100vh;
+      padding: 24px 16px;
+    }
+    .container { max-width: 900px; margin: 0 auto; }
+    .header {
+      background: white;
+      border-radius: 8px;
+      border-top: 10px solid #673ab7;
+      box-shadow: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+      padding: 24px;
+      margin-bottom: 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .header h1 { font-size: 24px; font-weight: 400; }
+    .header-actions { display: flex; gap: 12px; align-items: center; }
+    .header-actions a {
+      font-size: 14px;
+      color: #673ab7;
+      text-decoration: none;
+    }
+    .header-actions a:hover { text-decoration: underline; }
+    .logout-btn {
+      padding: 8px 16px;
+      background: transparent;
+      border: 1px solid #dadce0;
+      border-radius: 4px;
+      color: #5f6368;
+      font-size: 13px;
+      cursor: pointer;
+      text-decoration: none;
+    }
+    .logout-btn:hover { background: #f1f3f4; }
+    .card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+      overflow: hidden;
+    }
+    .empty-state {
+      padding: 48px 24px;
+      text-align: center;
+      color: #5f6368;
+    }
+    table { width: 100%; border-collapse: collapse; }
+    th, td {
+      padding: 14px 20px;
+      text-align: left;
+      border-bottom: 1px solid #e8eaed;
+      font-size: 14px;
+    }
+    th {
+      background: #f8f9fa;
+      font-weight: 500;
+      color: #5f6368;
+      font-size: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+    tr:hover td { background: #fafafa; }
+    .actions { display: flex; gap: 8px; }
+    .btn-sm {
+      padding: 6px 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .btn-view {
+      background: #ede7f6;
+      color: #673ab7;
+    }
+    .btn-view:hover { background: #d1c4e9; }
+    .btn-download {
+      background: #e8f5e9;
+      color: #188038;
+    }
+    .btn-download:hover { background: #c8e6c9; }
+    .count-badge {
+      background: #673ab7;
+      color: white;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 12px;
+    }
+    @media (max-width: 600px) {
+      th, td { padding: 10px 12px; font-size: 13px; }
+      .actions { flex-direction: column; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div>
+        <h1>Submissions</h1>
+        <span class="count-badge">{{ submissions|length }} response{{ 's' if submissions|length != 1 else '' }}</span>
+        {% if storage_backend == 'memory' %}
+        <p style="font-size:12px;color:#e37400;margin-top:8px;">Using in-memory storage (local only). Set REDIS_URL for persistent storage on Vercel.</p>
+        {% else %}
+        <p style="font-size:12px;color:#188038;margin-top:8px;">Connected to Redis</p>
+        {% endif %}
+      </div>
+      <div class="header-actions">
+        <a href="/">← Back to form</a>
+        <a href="/admin/logout" class="logout-btn">Logout</a>
+      </div>
+    </div>
+
+    <div class="card">
+      {% if submissions %}
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Submitted</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for s in submissions %}
+          <tr>
+            <td>{{ s.id }}</td>
+            <td><strong>{{ s.name }}</strong></td>
+            <td>{{ s.submitted_at }}</td>
+            <td>
+              <div class="actions">
+                <a href="/admin/submission/{{ s.id }}" class="btn-sm btn-view">View</a>
+                <a href="/admin/download/{{ s.id }}" class="btn-sm btn-download">Download DOCX</a>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="empty-state">
+        <p>No submissions yet. Share the form link to collect responses.</p>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

@@ -1,0 +1,1105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quick Platter — Requirement Questionnaire</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Google+Sans:wght@400;500;700&family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #673ab7;
+      --primary-dark: #512da8;
+      --primary-light: #ede7f6;
+      --border: #dadce0;
+      --text: #202124;
+      --text-secondary: #5f6368;
+      --bg: #f0ebf8;
+      --white: #ffffff;
+      --error: #d93025;
+      --success: #188038;
+      --radius: 8px;
+      --shadow: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+    }
+
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 24px 16px 80px;
+      line-height: 1.5;
+    }
+
+    .container {
+      max-width: 640px;
+      margin: 0 auto;
+    }
+
+    .form-header {
+      background: var(--white);
+      border-radius: var(--radius);
+      border-top: 10px solid var(--primary);
+      box-shadow: var(--shadow);
+      padding: 24px 24px 16px;
+      margin-bottom: 12px;
+      position: relative;
+    }
+
+    .form-header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 16px;
+    }
+
+    .form-header-content {
+      flex: 1;
+    }
+
+    .form-header h1 {
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      font-size: 32px;
+      font-weight: 400;
+      color: var(--text);
+      margin-bottom: 8px;
+    }
+
+    .form-header p {
+      color: var(--text-secondary);
+      font-size: 14px;
+    }
+
+    .required-note {
+      color: var(--error);
+      font-size: 13px;
+      margin-top: 12px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      padding: 24px;
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--primary);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 4px;
+    }
+
+    .question-block {
+      margin-bottom: 28px;
+    }
+
+    .question-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .question-label {
+      font-size: 16px;
+      font-weight: 400;
+      margin-bottom: 4px;
+      display: block;
+    }
+
+    .question-label .q-num {
+      font-weight: 500;
+    }
+
+    .question-hint {
+      font-size: 12px;
+      color: var(--text-secondary);
+      margin-bottom: 12px;
+    }
+
+    .response-type {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--primary);
+      background: var(--primary-light);
+      padding: 3px 10px;
+      border-radius: 12px;
+      margin-bottom: 12px;
+      letter-spacing: 0.2px;
+    }
+
+    .response-type.text-type {
+      color: #5f6368;
+      background: #f1f3f4;
+    }
+
+    .required-star {
+      color: var(--error);
+    }
+
+    .options-group {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 6px 8px;
+      background: #fafafa;
+    }
+
+    .option-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s;
+      border: 1px solid transparent;
+    }
+
+    .option-item:hover {
+      background: #fff;
+      border-color: var(--border);
+    }
+
+    .option-item:has(input:checked) {
+      background: var(--primary-light);
+      border-color: #b39ddb;
+    }
+
+    .option-item input[type="radio"],
+    .option-item input[type="checkbox"] {
+      width: 18px;
+      height: 18px;
+      accent-color: var(--primary);
+      cursor: pointer;
+      flex-shrink: 0;
+    }
+
+    .option-item label {
+      font-size: 14px;
+      cursor: pointer;
+      flex: 1;
+    }
+
+    .text-input {
+      width: 100%;
+      max-width: 320px;
+      padding: 10px 12px;
+      border: none;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      transition: border-color 0.2s;
+      background: transparent;
+    }
+
+    .text-input:focus {
+      border-bottom: 2px solid var(--primary);
+    }
+
+    .text-input.full-width {
+      max-width: 100%;
+    }
+
+    .textarea-input {
+      width: 100%;
+      min-height: 80px;
+      padding: 10px 12px;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      resize: vertical;
+      transition: border-color 0.2s;
+    }
+
+    .textarea-input:focus {
+      border-color: var(--primary);
+    }
+
+    .inline-field {
+      margin-top: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+
+    .inline-field label {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .currency-prefix {
+      font-size: 14px;
+      color: var(--text-secondary);
+    }
+
+    .submit-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 8px;
+    }
+
+    .btn {
+      font-family: 'Google Sans', 'Roboto', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 24px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.2s, box-shadow 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      box-shadow: 0 1px 3px rgba(0,0,0,.2);
+    }
+
+    .btn-primary:disabled {
+      background: #b39ddb;
+      cursor: not-allowed;
+    }
+
+    .btn-clear {
+      background: transparent;
+      color: var(--text-secondary);
+    }
+
+    .btn-clear:hover {
+      background: #f1f3f4;
+    }
+
+    .admin-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--primary);
+      color: white;
+      font-size: 14px;
+      font-weight: 500;
+      padding: 10px 18px;
+      border-radius: 6px;
+      box-shadow: var(--shadow);
+      text-decoration: none;
+      white-space: nowrap;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+
+    .admin-btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-1px);
+    }
+
+    .admin-btn svg {
+      width: 16px;
+      height: 16px;
+      fill: currentColor;
+    }
+
+    .admin-btn-fixed {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      z-index: 100;
+    }
+
+    .toast {
+      position: fixed;
+      top: 24px;
+      left: 50%;
+      transform: translateX(-50%) translateY(-120px);
+      background: var(--white);
+      padding: 16px 24px;
+      border-radius: var(--radius);
+      box-shadow: 0 4px 12px rgba(0,0,0,.15);
+      z-index: 1000;
+      transition: transform 0.4s cubic-bezier(.4,0,.2,1);
+      max-width: 90%;
+      text-align: center;
+    }
+
+    .toast.show {
+      transform: translateX(-50%) translateY(0);
+    }
+
+    .toast.success { border-left: 4px solid var(--success); }
+    .toast.error { border-left: 4px solid var(--error); }
+
+    .toast p { font-size: 14px; }
+
+    .progress-bar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 3px;
+      background: var(--primary);
+      width: 0%;
+      transition: width 0.3s;
+      z-index: 999;
+    }
+
+    @media (max-width: 480px) {
+      .form-header h1 { font-size: 24px; }
+      .card { padding: 16px; }
+      body { padding: 12px 8px 80px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="progress-bar" id="progressBar"></div>
+  <div class="toast" id="toast"><p id="toastMsg"></p></div>
+
+  <div class="container">
+    <div class="form-header">
+      <div class="form-header-top">
+        <div class="form-header-content">
+          <h1>Quick Platter</h1>
+          <p>Requirement Gathering Questionnaire</p>
+          <p class="required-note">* Indicates required question</p>
+        </div>
+        <a href="/admin/login" class="admin-btn" title="View submitted responses">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+          Admin
+        </a>
+      </div>
+    </div>
+
+    <form id="questionnaireForm">
+      <!-- Name -->
+      <div class="card">
+        <div class="question-block">
+          <label class="question-label" for="respondentName">
+            Your Name <span class="required-star">*</span>
+          </label>
+          <input type="text" id="respondentName" class="text-input full-width" placeholder="Enter your full name" required>
+        </div>
+      </div>
+
+      <!-- SECTION 1 -->
+      <div class="card">
+        <div class="section-title">Section 1: Business Information</div>
+      </div>
+      <div class="card">
+        <div class="question-block" data-q="1" data-type="radio" data-label="Business Type">
+          <span class="question-label"><span class="q-num">1.</span> Business Type</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q1" id="q1a" value="Retail Customers (B2C)"><label for="q1a">Retail Customers (B2C)</label></div>
+            <div class="option-item"><input type="radio" name="q1" id="q1b" value="Restaurants / Hotels (B2B)"><label for="q1b">Restaurants / Hotels (B2B)</label></div>
+            <div class="option-item"><input type="radio" name="q1" id="q1c" value="Both"><label for="q1c">Both</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="2" data-type="radio" data-label="How many physical stores are currently operational?">
+          <span class="question-label"><span class="q-num">2.</span> How many physical stores are currently operational?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q2" id="q2a" value="1"><label for="q2a">1</label></div>
+            <div class="option-item"><input type="radio" name="q2" id="q2b" value="2"><label for="q2b">2</label></div>
+            <div class="option-item"><input type="radio" name="q2" id="q2c" value="3"><label for="q2c">3</label></div>
+            <div class="option-item"><input type="radio" name="q2" id="q2d" value="4+"><label for="q2d">4+</label></div>
+          </div>
+          <div class="inline-field">
+            <label for="q2_store_names">Store Names:</label>
+            <input type="text" id="q2_store_names" class="text-input full-width" placeholder="e.g. Store A, Store B, Store C">
+          </div>
+        </div>
+        <div class="question-block" data-q="3" data-type="radio" data-label="Do all stores sell the same products?">
+          <span class="question-label"><span class="q-num">3.</span> Do all stores sell the same products?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q3" id="q3a" value="Yes"><label for="q3a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q3" id="q3b" value="No"><label for="q3b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="4" data-type="radio" data-label="Will prices differ store-wise?">
+          <span class="question-label"><span class="q-num">4.</span> Will prices differ store-wise?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q4" id="q4a" value="Yes"><label for="q4a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q4" id="q4b" value="No"><label for="q4b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 2 -->
+      <div class="card"><div class="section-title">Section 2: Product Catalog</div></div>
+      <div class="card">
+        <div class="question-block" data-q="5" data-type="radio" data-label="Approximately how many products will be listed initially?">
+          <span class="question-label"><span class="q-num">5.</span> Approximately how many products will be listed initially?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q5" id="q5a" value="Under 50"><label for="q5a">Under 50</label></div>
+            <div class="option-item"><input type="radio" name="q5" id="q5b" value="50-100"><label for="q5b">50-100</label></div>
+            <div class="option-item"><input type="radio" name="q5" id="q5c" value="100-250"><label for="q5c">100-250</label></div>
+            <div class="option-item"><input type="radio" name="q5" id="q5d" value="250+"><label for="q5d">250+</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="6" data-type="checkbox" data-label="Product Categories Required">
+          <span class="question-label"><span class="q-num">6.</span> Product Categories Required</span>
+          <div class="options-group">
+            <div class="option-item"><input type="checkbox" name="q6" id="q6a" value="Fresh Meat"><label for="q6a">Fresh Meat</label></div>
+            <div class="option-item"><input type="checkbox" name="q6" id="q6b" value="Frozen Food"><label for="q6b">Frozen Food</label></div>
+            <div class="option-item"><input type="checkbox" name="q6" id="q6c" value="Ready To Cook"><label for="q6c">Ready To Cook</label></div>
+            <div class="option-item"><input type="checkbox" name="q6" id="q6d" value="Spice Mixes"><label for="q6d">Spice Mixes</label></div>
+            <div class="option-item"><input type="checkbox" name="q6" id="q6e" value="Marinades"><label for="q6e">Marinades</label></div>
+            <div class="option-item"><input type="checkbox" name="q6" id="q6f" value="Others"><label for="q6f">Others</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="7" data-type="radio" data-label="Do products have multiple variants?">
+          <span class="question-label"><span class="q-num">7.</span> Do products have multiple variants?</span>
+          <p class="question-hint">Example: 500gm, 1kg, Skinless</p>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q7" id="q7a" value="Yes"><label for="q7a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q7" id="q7b" value="No"><label for="q7b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="8" data-type="radio" data-label="Do products have expiry dates?">
+          <span class="question-label"><span class="q-num">8.</span> Do products have expiry dates?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q8" id="q8a" value="Yes"><label for="q8a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q8" id="q8b" value="No"><label for="q8b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="9" data-type="radio" data-label="Should customers see stock availability?">
+          <span class="question-label"><span class="q-num">9.</span> Should customers see stock availability?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q9" id="q9a" value="Yes"><label for="q9a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q9" id="q9b" value="No"><label for="q9b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 3 -->
+      <div class="card"><div class="section-title">Section 3: Customer Registration</div></div>
+      <div class="card">
+        <div class="question-block" data-q="10" data-type="radio" data-label="Registration Method">
+          <span class="question-label"><span class="q-num">10.</span> Registration Method</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q10" id="q10a" value="Mobile OTP"><label for="q10a">Mobile OTP</label></div>
+            <div class="option-item"><input type="radio" name="q10" id="q10b" value="Email Password"><label for="q10b">Email Password</label></div>
+            <div class="option-item"><input type="radio" name="q10" id="q10c" value="Both"><label for="q10c">Both</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="11" data-type="radio" data-label="Is guest checkout required?">
+          <span class="question-label"><span class="q-num">11.</span> Is guest checkout required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q11" id="q11a" value="Yes"><label for="q11a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q11" id="q11b" value="No"><label for="q11b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="12" data-type="radio" data-label="Should customer login be mandatory before ordering?">
+          <span class="question-label"><span class="q-num">12.</span> Should customer login be mandatory before ordering?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q12" id="q12a" value="Yes"><label for="q12a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q12" id="q12b" value="No"><label for="q12b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 4 -->
+      <div class="card"><div class="section-title">Section 4: Cart & Checkout</div></div>
+      <div class="card">
+        <div class="question-block" data-q="13" data-type="text" data-label="Minimum Order Value">
+          <span class="question-label"><span class="q-num">13.</span> Minimum Order Value</span>
+          <div class="inline-field"><span class="currency-prefix">₹</span><input type="text" id="q13" class="text-input" placeholder="e.g. 500"></div>
+        </div>
+        <div class="question-block" data-q="14" data-type="radio" data-label="Delivery Charges">
+          <span class="question-label"><span class="q-num">14.</span> Delivery Charges</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q14" id="q14a" value="Flat Rate"><label for="q14a">Flat Rate</label></div>
+            <div class="option-item"><input type="radio" name="q14" id="q14b" value="Distance Based"><label for="q14b">Distance Based</label></div>
+            <div class="option-item"><input type="radio" name="q14" id="q14c" value="Free Delivery"><label for="q14c">Free Delivery</label></div>
+          </div>
+          <div class="inline-field"><label for="q14_amount">Amount:</label><span class="currency-prefix">₹</span><input type="text" id="q14_amount" class="text-input" placeholder="e.g. 50"></div>
+        </div>
+        <div class="question-block" data-q="15" data-type="text" data-label="Free Delivery Threshold">
+          <span class="question-label"><span class="q-num">15.</span> Free Delivery Threshold</span>
+          <div class="inline-field"><span class="currency-prefix">₹</span><input type="text" id="q15" class="text-input" placeholder="e.g. 999 (order above this = free delivery)"></div>
+        </div>
+        <div class="question-block" data-q="16" data-type="radio" data-label="Delivery Slots Required?">
+          <span class="question-label"><span class="q-num">16.</span> Delivery Slots Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q16" id="q16a" value="Yes"><label for="q16a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q16" id="q16b" value="No"><label for="q16b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="17" data-type="radio" data-label="Store Pickup Option Required?">
+          <span class="question-label"><span class="q-num">17.</span> Store Pickup Option Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q17" id="q17a" value="Yes"><label for="q17a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q17" id="q17b" value="No"><label for="q17b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="18" data-type="radio" data-label="Special Instructions Field Required?">
+          <span class="question-label"><span class="q-num">18.</span> Special Instructions Field Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q18" id="q18a" value="Yes"><label for="q18a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q18" id="q18b" value="No"><label for="q18b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 5 -->
+      <div class="card"><div class="section-title">Section 5: Payment</div></div>
+      <div class="card">
+        <div class="question-block" data-q="19" data-type="checkbox" data-label="Payment Options Required">
+          <span class="question-label"><span class="q-num">19.</span> Payment Options Required</span>
+          <div class="options-group">
+            <div class="option-item"><input type="checkbox" name="q19" id="q19a" value="Cash On Delivery"><label for="q19a">Cash On Delivery</label></div>
+            <div class="option-item"><input type="checkbox" name="q19" id="q19b" value="UPI"><label for="q19b">UPI</label></div>
+            <div class="option-item"><input type="checkbox" name="q19" id="q19c" value="Credit/Debit Card"><label for="q19c">Credit/Debit Card</label></div>
+            <div class="option-item"><input type="checkbox" name="q19" id="q19d" value="Net Banking"><label for="q19d">Net Banking</label></div>
+            <div class="option-item"><input type="checkbox" name="q19" id="q19e" value="WhatsApp Payment Link"><label for="q19e">WhatsApp Payment Link</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="20" data-type="radio" data-label="Is online payment mandatory?">
+          <span class="question-label"><span class="q-num">20.</span> Is online payment mandatory?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q20" id="q20a" value="Yes"><label for="q20a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q20" id="q20b" value="No"><label for="q20b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 6 -->
+      <div class="card"><div class="section-title">Section 6: WhatsApp Order Flow</div></div>
+      <div class="card">
+        <div class="question-block" data-q="21" data-type="radio" data-label="Who receives WhatsApp Orders?">
+          <span class="question-label"><span class="q-num">21.</span> Who receives WhatsApp Orders?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q21" id="q21a" value="Central Team"><label for="q21a">Central Team</label></div>
+            <div class="option-item"><input type="radio" name="q21" id="q21b" value="Store Team"><label for="q21b">Store Team</label></div>
+            <div class="option-item"><input type="radio" name="q21" id="q21c" value="Both"><label for="q21c">Both</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="22" data-type="radio" data-label="Should order be assigned automatically to nearest store?">
+          <span class="question-label"><span class="q-num">22.</span> Should order be assigned automatically to nearest store?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q22" id="q22a" value="Yes"><label for="q22a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q22" id="q22b" value="No"><label for="q22b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="23" data-type="text" data-label="WhatsApp Number(s)">
+          <span class="question-label"><span class="q-num">23.</span> WhatsApp Number(s)</span>
+          <input type="text" id="q23" class="text-input full-width" placeholder="e.g. +91 98765 43210, +91 91234 56789">
+        </div>
+        <div class="question-block" data-q="24" data-type="checkbox" data-label="Required Order Statuses">
+          <span class="question-label"><span class="q-num">24.</span> Required Order Statuses</span>
+          <div class="options-group">
+            <div class="option-item"><input type="checkbox" name="q24" id="q24a" value="New"><label for="q24a">New</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24b" value="Contacted"><label for="q24b">Contacted</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24c" value="Confirmed"><label for="q24c">Confirmed</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24d" value="Processing"><label for="q24d">Processing</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24e" value="Out For Delivery"><label for="q24e">Out For Delivery</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24f" value="Delivered"><label for="q24f">Delivered</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24g" value="Cancelled"><label for="q24g">Cancelled</label></div>
+            <div class="option-item"><input type="checkbox" name="q24" id="q24h" value="Custom Statuses"><label for="q24h">Custom Statuses</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 7 -->
+      <div class="card"><div class="section-title">Section 7: Inventory Management</div></div>
+      <div class="card">
+        <div class="question-block" data-q="25" data-type="radio" data-label="Inventory Management Required?">
+          <span class="question-label"><span class="q-num">25.</span> Inventory Management Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q25" id="q25a" value="Yes"><label for="q25a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q25" id="q25b" value="No"><label for="q25b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="26" data-type="radio" data-label="Inventory Maintained At">
+          <span class="question-label"><span class="q-num">26.</span> Inventory Maintained At</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q26" id="q26a" value="Product Level"><label for="q26a">Product Level</label></div>
+            <div class="option-item"><input type="radio" name="q26" id="q26b" value="Variant Level"><label for="q26b">Variant Level</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="27" data-type="radio" data-label="Inventory Separate For Each Store?">
+          <span class="question-label"><span class="q-num">27.</span> Inventory Separate For Each Store?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q27" id="q27a" value="Yes"><label for="q27a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q27" id="q27b" value="No"><label for="q27b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="28" data-type="radio" data-label="Low Stock Alert Required?">
+          <span class="question-label"><span class="q-num">28.</span> Low Stock Alert Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q28" id="q28a" value="Yes"><label for="q28a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q28" id="q28b" value="No"><label for="q28b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="29" data-type="text" data-label="Low Stock Threshold">
+          <span class="question-label"><span class="q-num">29.</span> Low Stock Threshold</span>
+          <div class="inline-field"><input type="text" id="q29" class="text-input" placeholder="e.g. 10"><span>Units</span></div>
+        </div>
+      </div>
+
+      <!-- SECTION 8 -->
+      <div class="card"><div class="section-title">Section 8: Customer Features</div></div>
+      <div class="card">
+        <div class="question-block" data-q="30" data-type="radio" data-label="Wishlist Required?">
+          <span class="question-label"><span class="q-num">30.</span> Wishlist Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q30" id="q30a" value="Yes"><label for="q30a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q30" id="q30b" value="No"><label for="q30b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="31" data-type="radio" data-label="Product Reviews Required?">
+          <span class="question-label"><span class="q-num">31.</span> Product Reviews Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q31" id="q31a" value="Yes"><label for="q31a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q31" id="q31b" value="No"><label for="q31b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="32" data-type="radio" data-label="Loyalty Points Required?">
+          <span class="question-label"><span class="q-num">32.</span> Loyalty Points Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q32" id="q32a" value="Yes"><label for="q32a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q32" id="q32b" value="No"><label for="q32b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="33" data-type="radio" data-label="Referral Program Required?">
+          <span class="question-label"><span class="q-num">33.</span> Referral Program Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q33" id="q33a" value="Yes"><label for="q33a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q33" id="q33b" value="No"><label for="q33b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="34" data-type="radio" data-label="Reorder Previous Purchases?">
+          <span class="question-label"><span class="q-num">34.</span> Reorder Previous Purchases?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q34" id="q34a" value="Yes"><label for="q34a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q34" id="q34b" value="No"><label for="q34b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 9 -->
+      <div class="card"><div class="section-title">Section 9: Offers & Promotions</div></div>
+      <div class="card">
+        <div class="question-block" data-q="35" data-type="radio" data-label="Coupon Codes Required?">
+          <span class="question-label"><span class="q-num">35.</span> Coupon Codes Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q35" id="q35a" value="Yes"><label for="q35a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q35" id="q35b" value="No"><label for="q35b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="36" data-type="radio" data-label="Percentage Discount Coupons?">
+          <span class="question-label"><span class="q-num">36.</span> Percentage Discount Coupons?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q36" id="q36a" value="Yes"><label for="q36a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q36" id="q36b" value="No"><label for="q36b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="37" data-type="radio" data-label="Flat Discount Coupons?">
+          <span class="question-label"><span class="q-num">37.</span> Flat Discount Coupons?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q37" id="q37a" value="Yes"><label for="q37a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q37" id="q37b" value="No"><label for="q37b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="38" data-type="radio" data-label="Buy X Get Y Offers?">
+          <span class="question-label"><span class="q-num">38.</span> Buy X Get Y Offers?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q38" id="q38a" value="Yes"><label for="q38a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q38" id="q38b" value="No"><label for="q38b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 10 -->
+      <div class="card"><div class="section-title">Section 10: Delivery Operations</div></div>
+      <div class="card">
+        <div class="question-block" data-q="39" data-type="radio" data-label="Delivery Managed By">
+          <span class="question-label"><span class="q-num">39.</span> Delivery Managed By</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q39" id="q39a" value="Own Delivery Team"><label for="q39a">Own Delivery Team</label></div>
+            <div class="option-item"><input type="radio" name="q39" id="q39b" value="Third Party Partner"><label for="q39b">Third Party Partner</label></div>
+            <div class="option-item"><input type="radio" name="q39" id="q39c" value="Both"><label for="q39c">Both</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="40" data-type="text" data-label="Delivery Radius">
+          <span class="question-label"><span class="q-num">40.</span> Delivery Radius</span>
+          <div class="inline-field"><input type="text" id="q40" class="text-input" placeholder="e.g. 5"><span>KM</span></div>
+        </div>
+        <div class="question-block" data-q="41" data-type="radio" data-label="Same Day Delivery Required?">
+          <span class="question-label"><span class="q-num">41.</span> Same Day Delivery Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q41" id="q41a" value="Yes"><label for="q41a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q41" id="q41b" value="No"><label for="q41b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="42" data-type="radio" data-label="Express Delivery Required?">
+          <span class="question-label"><span class="q-num">42.</span> Express Delivery Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q42" id="q42a" value="Yes"><label for="q42a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q42" id="q42b" value="No"><label for="q42b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 11 -->
+      <div class="card"><div class="section-title">Section 11: Admin Portal</div></div>
+      <div class="card">
+        <div class="question-block" data-q="43" data-type="text" data-label="Admin Users Required">
+          <span class="question-label"><span class="q-num">43.</span> Admin Users Required</span>
+          <div class="inline-field"><input type="text" id="q43" class="text-input" placeholder="e.g. 3"><span>Users</span></div>
+        </div>
+        <div class="question-block" data-q="44" data-type="checkbox" data-label="User Roles Required">
+          <span class="question-label"><span class="q-num">44.</span> User Roles Required</span>
+          <div class="options-group">
+            <div class="option-item"><input type="checkbox" name="q44" id="q44a" value="Super Admin"><label for="q44a">Super Admin</label></div>
+            <div class="option-item"><input type="checkbox" name="q44" id="q44b" value="Store Manager"><label for="q44b">Store Manager</label></div>
+            <div class="option-item"><input type="checkbox" name="q44" id="q44c" value="Inventory Manager"><label for="q44c">Inventory Manager</label></div>
+            <div class="option-item"><input type="checkbox" name="q44" id="q44d" value="Content Manager"><label for="q44d">Content Manager</label></div>
+            <div class="option-item"><input type="checkbox" name="q44" id="q44e" value="Sales Team"><label for="q44e">Sales Team</label></div>
+            <div class="option-item"><input type="checkbox" name="q44" id="q44f" value="Others"><label for="q44f">Others</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="45" data-type="radio" data-label="Should Admin Access Be Role Based?">
+          <span class="question-label"><span class="q-num">45.</span> Should Admin Access Be Role Based?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q45" id="q45a" value="Yes"><label for="q45a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q45" id="q45b" value="No"><label for="q45b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 12 -->
+      <div class="card"><div class="section-title">Section 12: Reports & Analytics</div></div>
+      <div class="card">
+        <div class="question-block" data-q="46" data-type="checkbox" data-label="Required Reports">
+          <span class="question-label"><span class="q-num">46.</span> Required Reports</span>
+          <div class="options-group">
+            <div class="option-item"><input type="checkbox" name="q46" id="q46a" value="Sales Report"><label for="q46a">Sales Report</label></div>
+            <div class="option-item"><input type="checkbox" name="q46" id="q46b" value="Store Performance"><label for="q46b">Store Performance</label></div>
+            <div class="option-item"><input type="checkbox" name="q46" id="q46c" value="Product Performance"><label for="q46c">Product Performance</label></div>
+            <div class="option-item"><input type="checkbox" name="q46" id="q46d" value="Inventory Report"><label for="q46d">Inventory Report</label></div>
+            <div class="option-item"><input type="checkbox" name="q46" id="q46e" value="Customer Report"><label for="q46e">Customer Report</label></div>
+            <div class="option-item"><input type="checkbox" name="q46" id="q46f" value="Order Status Report"><label for="q46f">Order Status Report</label></div>
+            <div class="option-item"><input type="checkbox" name="q46" id="q46g" value="Lead Report"><label for="q46g">Lead Report</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="47" data-type="radio" data-label="Report Export Formats">
+          <span class="question-label"><span class="q-num">47.</span> Report Export Formats</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q47" id="q47a" value="Excel"><label for="q47a">Excel</label></div>
+            <div class="option-item"><input type="radio" name="q47" id="q47b" value="PDF"><label for="q47b">PDF</label></div>
+            <div class="option-item"><input type="radio" name="q47" id="q47c" value="Both"><label for="q47c">Both</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 13 -->
+      <div class="card"><div class="section-title">Section 13: SEO & Marketing</div></div>
+      <div class="card">
+        <div class="question-block" data-q="48" data-type="radio" data-label="Blog Section Required?">
+          <span class="question-label"><span class="q-num">48.</span> Blog Section Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q48" id="q48a" value="Yes"><label for="q48a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q48" id="q48b" value="No"><label for="q48b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="49" data-type="radio" data-label="Google Analytics Required?">
+          <span class="question-label"><span class="q-num">49.</span> Google Analytics Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q49" id="q49a" value="Yes"><label for="q49a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q49" id="q49b" value="No"><label for="q49b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="50" data-type="radio" data-label="Meta Ads Tracking Required?">
+          <span class="question-label"><span class="q-num">50.</span> Meta Ads Tracking Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q50" id="q50a" value="Yes"><label for="q50a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q50" id="q50b" value="No"><label for="q50b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="51" data-type="radio" data-label="WhatsApp Click Tracking Required?">
+          <span class="question-label"><span class="q-num">51.</span> WhatsApp Click Tracking Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q51" id="q51a" value="Yes"><label for="q51a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q51" id="q51b" value="No"><label for="q51b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 14 -->
+      <div class="card"><div class="section-title">Section 14: Legal & Compliance</div></div>
+      <div class="card">
+        <div class="question-block" data-q="52" data-type="radio" data-label="GST Applicable?">
+          <span class="question-label"><span class="q-num">52.</span> GST Applicable?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q52" id="q52a" value="Yes"><label for="q52a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q52" id="q52b" value="No"><label for="q52b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="53" data-type="radio" data-label="Tax Invoice Required?">
+          <span class="question-label"><span class="q-num">53.</span> Tax Invoice Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q53" id="q53a" value="Yes"><label for="q53a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q53" id="q53b" value="No"><label for="q53b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="54" data-type="radio" data-label="FSSAI Number To Be Displayed?">
+          <span class="question-label"><span class="q-num">54.</span> FSSAI Number To Be Displayed?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q54" id="q54a" value="Yes"><label for="q54a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q54" id="q54b" value="No"><label for="q54b">No</label></div>
+          </div>
+          <div class="inline-field"><label for="q54_number">Number:</label><input type="text" id="q54_number" class="text-input full-width" placeholder="Enter your 14-digit FSSAI number"></div>
+        </div>
+        <div class="question-block" data-q="55" data-type="radio" data-label="Halal Certification Display Required?">
+          <span class="question-label"><span class="q-num">55.</span> Halal Certification Display Required?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q55" id="q55a" value="Yes"><label for="q55a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q55" id="q55b" value="No"><label for="q55b">No</label></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- SECTION 15 -->
+      <div class="card"><div class="section-title">Section 15: Future Roadmap</div></div>
+      <div class="card">
+        <div class="question-block" data-q="56" data-type="radio" data-label="Mobile App Planned?">
+          <span class="question-label"><span class="q-num">56.</span> Mobile App Planned?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q56" id="q56a" value="Yes"><label for="q56a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q56" id="q56b" value="No"><label for="q56b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="57" data-type="radio" data-label="Subscription Orders Planned?">
+          <span class="question-label"><span class="q-num">57.</span> Subscription Orders Planned?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q57" id="q57a" value="Yes"><label for="q57a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q57" id="q57b" value="No"><label for="q57b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="58" data-type="radio" data-label="Multi-Language Support Planned?">
+          <span class="question-label"><span class="q-num">58.</span> Multi-Language Support Planned?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="radio" name="q58" id="q58a" value="Yes"><label for="q58a">Yes</label></div>
+            <div class="option-item"><input type="radio" name="q58" id="q58b" value="No"><label for="q58b">No</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="59" data-type="checkbox" data-label="Marketplace Integrations Planned?">
+          <span class="question-label"><span class="q-num">59.</span> Marketplace Integrations Planned?</span>
+          <div class="options-group">
+            <div class="option-item"><input type="checkbox" name="q59" id="q59a" value="Blinkit"><label for="q59a">Blinkit</label></div>
+            <div class="option-item"><input type="checkbox" name="q59" id="q59b" value="Zepto"><label for="q59b">Zepto</label></div>
+            <div class="option-item"><input type="checkbox" name="q59" id="q59c" value="Swiggy Instamart"><label for="q59c">Swiggy Instamart</label></div>
+            <div class="option-item"><input type="checkbox" name="q59" id="q59d" value="BigBasket"><label for="q59d">BigBasket</label></div>
+            <div class="option-item"><input type="checkbox" name="q59" id="q59e" value="Others"><label for="q59e">Others</label></div>
+          </div>
+        </div>
+        <div class="question-block" data-q="60" data-type="textarea" data-label="Any Additional Requirement Not Covered Above?">
+          <span class="question-label"><span class="q-num">60.</span> Any Additional Requirement Not Covered Above?</span>
+          <textarea id="q60" class="textarea-input" placeholder="Describe any extra features or requirements not listed above…"></textarea>
+        </div>
+      </div>
+
+      <!-- Submit -->
+      <div class="card">
+        <div class="submit-bar">
+          <button type="submit" class="btn btn-primary" id="submitBtn">Submit</button>
+          <button type="button" class="btn btn-clear" id="clearBtn">Clear form</button>
+        </div>
+        <p style="text-align:center;margin-top:20px;font-size:13px;color:#5f6368;">
+          Already submitted? <a href="/admin/login" style="color:#673ab7;font-weight:500;">Go to Admin Panel</a> to view responses.
+        </p>
+      </div>
+    </form>
+  </div>
+
+  <a href="/admin/login" class="admin-btn admin-btn-fixed" title="View submitted responses">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4zm0 10.99h7c-.53 4.12-3.28 7.79-7 8.94V12H5V6.3l7-3.11v8.8z"/></svg>
+    Admin
+  </a>
+
+  <script>
+    const SECTIONS = [
+      { title: "Section 1: Business Information", questions: [1,2,3,4] },
+      { title: "Section 2: Product Catalog", questions: [5,6,7,8,9] },
+      { title: "Section 3: Customer Registration", questions: [10,11,12] },
+      { title: "Section 4: Cart & Checkout", questions: [13,14,15,16,17,18] },
+      { title: "Section 5: Payment", questions: [19,20] },
+      { title: "Section 6: WhatsApp Order Flow", questions: [21,22,23,24] },
+      { title: "Section 7: Inventory Management", questions: [25,26,27,28,29] },
+      { title: "Section 8: Customer Features", questions: [30,31,32,33,34] },
+      { title: "Section 9: Offers & Promotions", questions: [35,36,37,38] },
+      { title: "Section 10: Delivery Operations", questions: [39,40,41,42] },
+      { title: "Section 11: Admin Portal", questions: [43,44,45] },
+      { title: "Section 12: Reports & Analytics", questions: [46,47] },
+      { title: "Section 13: SEO & Marketing", questions: [48,49,50,51] },
+      { title: "Section 14: Legal & Compliance", questions: [52,53,54,55] },
+      { title: "Section 15: Future Roadmap", questions: [56,57,58,59,60] },
+    ];
+
+    const EXTRA_FIELDS = {
+      2: [{ id: "q2_store_names", label: "Store Names" }],
+      14: [{ id: "q14_amount", label: "Delivery Charge Amount" }],
+      54: [{ id: "q54_number", label: "FSSAI Number" }],
+    };
+
+    function getRadioValue(name) {
+      const el = document.querySelector(`input[name="${name}"]:checked`);
+      return el ? el.value : "";
+    }
+
+    function getCheckboxValues(name) {
+      return Array.from(document.querySelectorAll(`input[name="${name}"]:checked`)).map(el => el.value);
+    }
+
+    function getTextValue(id) {
+      const el = document.getElementById(id);
+      return el ? el.value.trim() : "";
+    }
+
+    function collectResponses() {
+      const responses = [];
+
+      for (const section of SECTIONS) {
+        responses.push({ type: "section", label: section.title });
+
+        for (const qNum of section.questions) {
+          const block = document.querySelector(`.question-block[data-q="${qNum}"]`);
+          if (!block) continue;
+
+          const label = block.dataset.label;
+          const type = block.dataset.type;
+          let answer = "";
+
+          if (type === "radio") {
+            answer = getRadioValue(`q${qNum}`);
+          } else if (type === "checkbox") {
+            answer = getCheckboxValues(`q${qNum}`);
+          } else if (type === "text") {
+            answer = getTextValue(`q${qNum}`);
+          } else if (type === "textarea") {
+            answer = getTextValue(`q${qNum}`);
+          }
+
+          const entry = { id: qNum, question: label, answer };
+
+          if (EXTRA_FIELDS[qNum]) {
+            for (const field of EXTRA_FIELDS[qNum]) {
+              const val = getTextValue(field.id);
+              if (val) {
+                if (typeof answer === "string" && answer) {
+                  entry.answer = `${answer} | ${field.label}: ${val}`;
+                } else if (Array.isArray(answer) && answer.length) {
+                  entry.answer = answer.join(", ") + ` | ${field.label}: ${val}`;
+                } else {
+                  entry.answer = `${field.label}: ${val}`;
+                }
+              }
+            }
+          }
+
+          responses.push(entry);
+        }
+      }
+
+      return responses;
+    }
+
+    function showToast(msg, type = "success") {
+      const toast = document.getElementById("toast");
+      const toastMsg = document.getElementById("toastMsg");
+      toastMsg.textContent = msg;
+      toast.className = `toast show ${type}`;
+      setTimeout(() => { toast.className = "toast"; }, 4000);
+    }
+
+    document.getElementById("questionnaireForm").addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const name = document.getElementById("respondentName").value.trim();
+      if (!name) {
+        showToast("Please enter your name.", "error");
+        document.getElementById("respondentName").focus();
+        return;
+      }
+
+      const btn = document.getElementById("submitBtn");
+      btn.disabled = true;
+      btn.textContent = "Submitting...";
+
+      try {
+        const res = await fetch("/submit", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ name, responses: collectResponses() }),
+        });
+        const data = await res.json();
+        if (data.success) {
+          showToast(data.message, "success");
+          document.getElementById("questionnaireForm").reset();
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        } else {
+          showToast(data.error || "Submission failed.", "error");
+        }
+      } catch {
+        showToast("Network error. Please try again.", "error");
+      } finally {
+        btn.disabled = false;
+        btn.textContent = "Submit";
+      }
+    });
+
+    document.getElementById("clearBtn").addEventListener("click", () => {
+      if (confirm("Clear all responses?")) {
+        document.getElementById("questionnaireForm").reset();
+      }
+    });
+
+    window.addEventListener("scroll", () => {
+      const scrollTop = window.scrollY;
+      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+      document.getElementById("progressBar").style.width = progress + "%";
+    });
+
+    const RESPONSE_LABELS = {
+      radio: "Choose one",
+      checkbox: "Select all that apply",
+      text: "Short answer",
+      textarea: "Long answer",
+    };
+
+    document.querySelectorAll(".question-block[data-type]").forEach((block) => {
+      const type = block.dataset.type;
+      const badge = document.createElement("span");
+      badge.className = "response-type" + (type === "text" || type === "textarea" ? " text-type" : "");
+      badge.textContent = RESPONSE_LABELS[type] || "";
+      const label = block.querySelector(".question-label");
+      if (label) label.insertAdjacentElement("afterend", badge);
+    });
+
+    document.querySelectorAll(".option-item").forEach((item) => {
+      item.addEventListener("click", (e) => {
+        if (e.target.tagName === "INPUT") return;
+        const input = item.querySelector("input");
+        if (!input) return;
+        if (input.type === "radio") {
+          input.checked = true;
+        } else if (input.type === "checkbox") {
+          input.checked = !input.checked;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

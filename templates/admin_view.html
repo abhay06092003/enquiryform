@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ submission.name }} — Submission #{{ submission.id }}</title>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Roboto', Arial, sans-serif;
+      background: #f0ebf8;
+      color: #202124;
+      min-height: 100vh;
+      padding: 24px 16px 60px;
+    }
+    .container { max-width: 720px; margin: 0 auto; }
+    .header {
+      background: white;
+      border-radius: 8px;
+      border-top: 10px solid #673ab7;
+      box-shadow: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+      padding: 24px;
+      margin-bottom: 12px;
+    }
+    .header h1 { font-size: 24px; font-weight: 400; margin-bottom: 4px; }
+    .meta { color: #5f6368; font-size: 14px; }
+    .toolbar {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 16px;
+      flex-wrap: wrap;
+    }
+    .toolbar a {
+      padding: 8px 16px;
+      border-radius: 4px;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .btn-back { background: white; color: #673ab7; border: 1px solid #dadce0; }
+    .btn-back:hover { background: #f8f9fa; }
+    .btn-download { background: #673ab7; color: white; }
+    .btn-download:hover { background: #512da8; }
+    .section-card {
+      background: white;
+      border-radius: 8px;
+      box-shadow: 0 1px 2px rgba(60,64,67,.3), 0 1px 3px 1px rgba(60,64,67,.15);
+      padding: 20px 24px;
+      margin-bottom: 12px;
+    }
+    .section-heading {
+      font-size: 14px;
+      font-weight: 500;
+      color: #673ab7;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      margin-bottom: 16px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #e8eaed;
+    }
+    .qa-item { margin-bottom: 20px; }
+    .qa-item:last-child { margin-bottom: 0; }
+    .question {
+      font-size: 15px;
+      font-weight: 500;
+      margin-bottom: 4px;
+    }
+    .answer {
+      font-size: 14px;
+      color: #5f6368;
+      padding-left: 16px;
+      border-left: 3px solid #ede7f6;
+    }
+    .answer.empty { color: #bdc1c6; font-style: italic; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="toolbar">
+      <a href="/admin" class="btn-back">← All Submissions</a>
+      <a href="/admin/download/{{ submission.id }}" class="btn-download">Download Word Document</a>
+    </div>
+
+    <div class="header">
+      <h1>{{ submission.name }}</h1>
+      <p class="meta">Submitted on {{ submission.submitted_at }} · Response #{{ submission.id }}</p>
+    </div>
+
+    {% for section in submission.sections %}
+    <div class="section-card">
+      <div class="section-heading">{{ section.title }}</div>
+      {% for item in section.questions %}
+      <div class="qa-item">
+        <div class="question">{{ item.id }}. {{ item.question }}</div>
+        {% if item.answer %}
+          {% if item.answer is string %}
+            <div class="answer">{{ item.answer }}</div>
+          {% else %}
+            <div class="answer">{{ item.answer | join(', ') }}</div>
+          {% endif %}
+        {% else %}
+          <div class="answer empty">No response</div>
+        {% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+  </div>
+</body>
+</html>
